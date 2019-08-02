@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using EmployeeDataAccess;
 
@@ -11,8 +12,11 @@ namespace WebAPIRevisited.Controllers
     public class EmployeesController : ApiController
     {
         [HttpGet]
+        [BasicAuthentication]
         public IEnumerable<Employee> LoadEmployees()
         {
+            string username = Thread.CurrentPrincipal.Identity.Name;
+            
             using (var entities = new EmployeesDBEntities())
             {
                 return entities.Employees.ToList();
